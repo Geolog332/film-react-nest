@@ -4,7 +4,6 @@ import { Model } from 'mongoose';
 import { Film } from '../films/schemas/film.schema';
 import { FilmDto } from '../films/dto/films.dto';
 import { ScheduleDto } from '../films/dto/schedule.dto';
-import { Schedule } from '../films/schemas/schedule.schema'; // Импортируем Schedule
 
 @Injectable()
 export class FilmsRepository {
@@ -37,7 +36,7 @@ export class FilmsRepository {
     };
   }
 
-  private toScheduleDto(schedule: Schedule): ScheduleDto {
+  private toScheduleDto(schedule: any): ScheduleDto {
     return {
       id: schedule.id,
       daytime: schedule.daytime,
@@ -45,7 +44,7 @@ export class FilmsRepository {
       rows: schedule.rows,
       seats: schedule.seats,
       price: schedule.price,
-      taken: schedule.taken,
+      taken: schedule.taken || [],
     };
   }
 }

@@ -16,7 +16,7 @@ import { MongooseModule } from '@nestjs/mongoose';
     }),
     ServeStaticModule.forRoot({
       rootPath: path.join(__dirname, '..', 'public'),
-      serveRoot: '/content/afisha',
+      serveRoot: '',
     }),
     MongooseModule.forRoot('mongodb://localhost:27017/afisha'),
     FilmsModule,

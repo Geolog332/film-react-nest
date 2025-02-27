@@ -1,7 +1,7 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { FilmsService } from './films.service';
 import { FilmDto } from './dto/films.dto';
-import { ScheduleDto } from './dto/schedule.dto';
+import { ScheduleResponseDto } from './dto/schedule.dto';
 
 @Controller('films')
 export class FilmsController {
@@ -13,7 +13,11 @@ export class FilmsController {
   }
 
   @Get(':id/schedule')
-  async getFilmSchedule(@Param('id') id: string): Promise<ScheduleDto[]> {
-    return this.filmsService.getFilmSchedule(id);
+  async getFilmSchedule(@Param('id') id: string): Promise<ScheduleResponseDto> {
+    const schedule = await this.filmsService.getFilmSchedule(id);
+    return {
+      total: schedule.length,
+      items: schedule,
+    };
   }
 }

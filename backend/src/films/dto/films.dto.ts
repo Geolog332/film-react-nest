@@ -11,5 +11,5 @@ export class FilmDto {
   description: string;
   image: string;
   cover: string;
-  schedule: ScheduleDto[]; // Добавляем поле schedule
+  schedule: ScheduleDto[];
 }
