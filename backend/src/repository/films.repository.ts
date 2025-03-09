@@ -13,6 +13,12 @@ export class FilmsRepository {
 
   async findAll(): Promise<FilmDto[]> {
     const films = await this.filmModel.find().exec();
+
+    // Проверка на то, что films не пустой массив
+    if (!films || films.length === 0) {
+      return [];
+    }
+
     return films.map((film) => this.toFilmDto(film));
   }
 

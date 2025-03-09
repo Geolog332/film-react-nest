@@ -18,7 +18,7 @@ import { MongooseModule } from '@nestjs/mongoose';
       rootPath: path.join(__dirname, '..', 'public'),
       serveRoot: '',
     }),
-    MongooseModule.forRoot('mongodb://localhost:27017/afisha'),
+    MongooseModule.forRoot(configProvider.useValue.database.url),
     FilmsModule,
     OrderModule,
   ],

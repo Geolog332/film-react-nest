@@ -38,13 +38,17 @@ export class OrderService {
     const orders = await this.orderRepository.findAllOrders();
     const occupiedSeats: string[] = [];
 
-    orders.forEach((order) => {
-      order.tickets.forEach((ticket) => {
-        if (ticket.session === sessionId) {
-          occupiedSeats.push(`${ticket.row}:${ticket.seat}`);
-        }
+    // Проверка на то, что orders не пустой массив
+    if (orders && orders.length > 0) {
+      orders.forEach((order) => {
+        order.tickets.forEach((ticket) => {
+          if (ticket.session === sessionId) {
+            occupiedSeats.push(`${ticket.row}:${ticket.seat}`);
+          }
+        });
       });
-    });
+    }
+
     return occupiedSeats;
   }
 }
