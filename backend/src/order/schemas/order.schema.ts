@@ -26,6 +26,12 @@ export class Ticket {
 
 @Schema()
 export class Order {
+  @Prop({ required: true })
+  email: string;
+
+  @Prop({ required: true })
+  phone: string;
+
   @Prop({ type: [Ticket], required: true })
   tickets: Ticket[];
 }

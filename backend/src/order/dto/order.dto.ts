@@ -1,5 +1,7 @@
 //TODO реализовать DTO для /orders
 export class CreateOrderDto {
+  email: string;
+  phone: string;
   tickets: {
     film: string;
     session: string;
