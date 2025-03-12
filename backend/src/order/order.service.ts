@@ -11,10 +11,12 @@ export class OrderService {
   constructor(private readonly orderRepository: OrderRepository) {}
 
   async create(createOrderDto: CreateOrderDto) {
+    // Проверка на наличие билетов
     if (!createOrderDto.tickets || createOrderDto.tickets.length === 0) {
       throw new BadRequestException('Не указаны билеты для заказа');
     }
 
+    // Проверка на занятые места
     const occupiedSeats = await this.findOccupiedSeats(
       createOrderDto.tickets[0].session,
     );
@@ -28,10 +30,21 @@ export class OrderService {
       notOccupiedSeats.push(seat);
     }
 
+    // Создание заказа
     const savedOrder = await this.orderRepository.create({
+      email: createOrderDto.email, // Добавляем email
+      phone: createOrderDto.phone, // Добавляем phone
       tickets: createOrderDto.tickets,
     });
-    return { total: savedOrder.tickets.length, items: savedOrder.tickets };
+
+    // Возвращаем полный объект заказа
+    return {
+      id: savedOrder.id,
+      email: savedOrder.email,
+      phone: savedOrder.phone,
+      total: savedOrder.tickets.length,
+      items: savedOrder.tickets,
+    };
   }
 
   async findOccupiedSeats(sessionId: string): Promise<string[]> {

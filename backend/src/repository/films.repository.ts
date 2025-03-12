@@ -1,20 +1,20 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { Film } from '../films/schemas/film.schema';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Film } from '../entities/film.entity';
 import { FilmDto } from '../films/dto/films.dto';
 import { ScheduleDto } from '../films/dto/schedule.dto';
 
 @Injectable()
 export class FilmsRepository {
   constructor(
-    @InjectModel(Film.name) private readonly filmModel: Model<Film>,
+    @InjectRepository(Film)
+    private readonly filmRepository: Repository<Film>,
   ) {}
 
   async findAll(): Promise<FilmDto[]> {
-    const films = await this.filmModel.find().exec();
+    const films = await this.filmRepository.find({ relations: ['schedule'] });
 
-    // Проверка на то, что films не пустой массив
     if (!films || films.length === 0) {
       return [];
     }
@@ -23,7 +23,10 @@ export class FilmsRepository {
   }
 
   async findById(id: string): Promise<FilmDto | null> {
-    const film = await this.filmModel.findOne({ id }).exec();
+    const film = await this.filmRepository.findOne({
+      where: { id },
+      relations: ['schedule'],
+    });
     return film ? this.toFilmDto(film) : null;
   }
 
